@@ -21,19 +21,19 @@ Follow these steps to set up and run the application:
 #### 1. Clone the repository
   - Download the project files by cloning the Git repository:
     ```bash
-    git clone https://github.com/your-repository/Binance-AI-Project.git
+    git clone https://github.com/Tibwal/Binance-AI-Project
+  Alternatively, you can download the zip file from the repository and extract its contents.
 
-#### 2. Set Up the Environment
-  - Open a terminal window.
-  - Navigate to the project directory:
+#### 2. Navigate to the project directory
+  - Open a terminal and navigate to the project folder:
       ```bash
       cd /path/to/Binance-AI-Project
     
-#### 3. Run the Docker containers:
-  - Execute the following command:
+#### 3. Build and Run the Application using Docker
+  - Start the application by running the following command:
     ```bash
     docker-compose up
-  (Note: For macOS users, ensure that the Docker application is running before executing this command.)
+  (Note: For macOS users, ensure that Docker Desktop is running before executing the command.)
 
 #### 4. Verify setup:
  - Ensure all containers are running correctly, and the necessary Docker images are built.
