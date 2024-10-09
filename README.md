@@ -7,7 +7,7 @@ Binance-AI-Project
 
 As part of my Data Engineer certification, I developed an AI-based prediction tool for the cryptocurrency markets, focusing on Bitcoin (BTC) and Ethereum (ETH). This tool provides price predictions for selected cryptocurrencies over user-defined time intervals.
 
-<img width="416" alt="image" src="https://github.com/user-attachments/assets/1d7b4cc2-6df7-4133-a3e2-577beedf35e9">
+<img width="1627" alt="image" src="https://github.com/user-attachments/assets/633535c3-0339-4632-bcfd-cab2c89dc493">
 
 
 ## Getting Started
