@@ -18,8 +18,10 @@ As part of my Data Engineer certification, I developed an AI-based prediction to
 
 Follow these steps to set up and run the application:
 
-#### 1. Download the Project
-  - Download the zip file from the provided link and extract its contents.
+#### 1. Clone the repository
+  - Download the project files by cloning the Git repository:
+    ```bash
+    git clone https://github.com/your-repository/Binance-AI-Project.git
 
 #### 2. Set Up the Environment
   - Open a terminal window.
