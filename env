@@ -1,0 +1,12 @@
+host=localhost
+user=opa_user
+password=opa_pwd
+database=opa_db
+root=root_pwd
+ad=admin
+adpass=admin_pwd
+login=admin
+password_mongo=pass
+
+
+ 
