@@ -1,0 +1,118 @@
+version: "3.9"
+services:
+  db_mysql:
+    container_name: mysql_container
+    image: mysql:8.0
+    #command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $root
+      MYSQL_DATABASE: $database
+      MYSQL_USER: $user
+      MYSQL_PASSWORD: $password
+
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$user --password=$$password
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    networks:
+      - my_network_project_opa
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    volumes :
+      # - ./requirements/volumes/data:/volumes/data
+      - ./requirements/mysql/volumes/db:/var1/lib/mysql
+      - ./requirements/mysql/volumes/script:/volumes/script
+
+  db_mongodb:
+    container_name: my_mongo3
+    image: mongo:5.0
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$login
+      - MONGO_INITDB_DATABASE=auth
+      - MONGO_INITDB_ROOT_PASSWORD=$password_mongo
+    networks:
+      - my_network_project_opa
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./sample_training:/data/db
+
+  mongoexpress:
+    container_name: mongo-express3
+    image: mongo-express:0.54
+    depends_on:
+      - db_mongodb
+    networks:
+      - my_network_project_opa
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=my_mongo3
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=$login
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=$password_mongo
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=$login
+      - ME_CONFIG_BASICAUTH_PASSWORD=$password_mongo
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sample_training:/data/db
+
+
+  api:
+    image: project_opa_api:1.0.0
+    build: ./api
+    container_name: opa_api
+    networks:
+      - my_network_project_opa
+    volumes:
+      - ./data/api:/home/api
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+    depends_on:
+      db_mysql:
+        condition: service_healthy
+
+  stream_data:
+    image: collect_stream_data:1.0.0
+    build: ./stream
+    container_name: opa_stream_data
+    networks:
+      - my_network_project_opa
+    volumes:
+      - ./data/stream:/home/stream
+    depends_on:
+      db_mongodb:
+        condition: service_healthy
+  
+  dashboard:
+    image: project_opa_dashboard:1.0.0
+    build: ./dashboard
+    container_name: opa_dashboard
+    networks:
+      - my_network_project_opa
+    volumes:
+      - ./data/dashboard:/home/dashboard
+    ports:
+      - "8501:8501"
+        #- target: 8501
+        #published: 8501
+        #protocol: tcp
+        #mode: host
+    depends_on:
+      db_mysql:
+        condition: service_healthy          
+networks:
+  my_network_project_opa:
